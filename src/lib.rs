@@ -6,35 +6,41 @@ extern crate range;
 
 use range::{ Range, ParentRange };
 
-/// A geometry range, pointing to triangle list `u32` index buffer.
-pub struct GeometryRange(Range);
+/// A geometry consists of a list of triangles.
+/// The triangles are stored separately,
+/// in a triangle list `u32` index buffer.
+pub struct Geometry(Range);
 
-impl ParentRange for GeometryRange {
+impl ParentRange for Geometry {
     type Child = u32;
 
-    fn from_range(range: Range) -> Self { GeometryRange(range) }
+    fn from_range(range: Range) -> Self { Geometry(range) }
     fn range(&self) -> &Range { &self.0 }
     fn range_mut(&mut self) -> &mut Range { &mut self.0 }
 }
 
-/// An object range, pointing to a geometry range buffer.
-pub struct ObjectRange(Range);
+/// An object consists of a list of geometries.
+/// The geometries are stored separately,
+/// in a geometry buffer.
+pub struct Object(Range);
 
-impl ParentRange for ObjectRange {
-    type Child = GeometryRange;
+impl ParentRange for Object {
+    type Child = Geometry;
 
-    fn from_range(range: Range) -> Self { ObjectRange(range) }
+    fn from_range(range: Range) -> Self { Object(range) }
     fn range(&self) -> &Range { &self.0 }
     fn range_mut(&mut self) -> &mut Range { &mut self.0 }
 }
 
-/// An object set range, pointing to an object range buffer.
-pub struct ObjectSetRange(Range);
+/// A model consists of a list of object.
+/// The objects are stored separately,
+/// in an object buffer.
+pub struct Model(Range);
 
-impl ParentRange for ObjectSetRange {
-    type Child = ObjectRange;
+impl ParentRange for Model {
+    type Child = Object;
 
-    fn from_range(range: Range) -> Self { ObjectSetRange(range) }
+    fn from_range(range: Range) -> Self { Model(range) }
     fn range(&self) -> &Range { &self.0 }
     fn range_mut(&mut self) -> &mut Range { &mut self.0 }
 }
