@@ -19,5 +19,5 @@ path = "src/lib.rs"
 
 [dependencies.range]
 git = "https://github.com/pistondevelopers/range"
-#version = "0.0.0"
+#version = "0.0.6"
 
