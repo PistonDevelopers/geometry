@@ -6,6 +6,11 @@ extern crate range;
 
 use range::{ Range, ParentRange };
 
+/// Used to convert indices from a format to indices in an index buffer.
+/// The range of these indices becomes a `Geometry` object.
+/// Is only used temporarily and not stored as part of scene geometry.
+pub struct VertexRange<T>(pub Range);
+
 /// A geometry consists of a list of triangles.
 /// The triangles are stored separately,
 /// in a triangle list `u32` index buffer.
