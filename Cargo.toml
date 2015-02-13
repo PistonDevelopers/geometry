@@ -1,0 +1,23 @@
+[package]
+
+name = "geometry"
+version = "0.0.0"
+authors = [
+    "bvssvni <bvssvni@gmail.com>"
+]
+keywords = ["geometry", "3D", "piston"]
+description = "A structure for storing and look up 3D geometry"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/PistonDevelopers/geometry.git"
+homepage = "https://github.com/PistonDevelopers/geometry"
+
+[lib]
+
+name = "geometry"
+path = "src/lib.rs"
+
+[dependencies.range]
+git = "https://github.com/pistondevelopers/range"
+#version = "0.0.0"
+
