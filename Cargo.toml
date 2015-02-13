@@ -21,3 +21,7 @@ path = "src/lib.rs"
 git = "https://github.com/pistondevelopers/range"
 #version = "0.0.6"
 
+[dependencies.wavefront_obj]
+git = "https://github.com/PistonDevelopers/wavefront_obj"
+#version = "0.0.0"
+
