@@ -1,8 +1,6 @@
 use range::{ Range, ParentRange };
 use wobj;
 
-use VertexRange;
-
 /// A geometry consists of a list of triangles.
 /// The triangles are stored separately,
 /// in a triangle list `u32` index buffer.
@@ -17,6 +15,7 @@ impl ParentRange for Geometry {
 }
 
 impl Geometry {
+    /*
     /// Adds geometry from Wavefront OBJ format to index buffer.
     pub fn add_wobj_indices<T>(
         geom: &wobj::obj::Geometry,
@@ -39,4 +38,5 @@ impl Geometry {
         }
         Geometry(Range::new(start, indices.len() - start))
     }
+    */
 }
