@@ -1,6 +1,6 @@
 use range::{ Range, ParentRange };
 use wobj;
-use wobj::obj::VTIndex;
+use wobj::obj::VTNIndex;
 use std::default::Default;
 use quack::{ Pair, SetAt };
 
@@ -23,7 +23,7 @@ impl ParentRange for Geometry {
     fn range_mut(&mut self) -> &mut Range { &mut self.0 }
 }
 
-fn vtn_to_vertex<T>(a: VTIndex, obj: &wobj::obj::Object) -> T
+fn vtn_to_vertex<T>(a: VTNIndex, obj: &wobj::obj::Object) -> T
     where
         T: Default,
         (Position, T): Pair<Data = Position, Object = T> + SetAt,
@@ -73,7 +73,7 @@ impl Geometry {
         let mut uvs: u32 = 0;
         let mut normals: u32 = 0;
         {
-            let mut add = |a: VTIndex| {
+            let mut add = |a: VTNIndex| {
                 if let Some(_) = a.1 { uvs += 1; }
                 if let Some(_) = a.2 { normals += 1; }
                 vertices.push(vtn_to_vertex(a, obj));
