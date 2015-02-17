@@ -1,4 +1,4 @@
-use range::{ Range, ParentRange };
+use range::{ AddTo, Range };
 use wobj;
 use wobj::obj::VTNIndex;
 use std::default::Default;
@@ -13,15 +13,7 @@ use VertexFormatError;
 /// A geometry consists of a list of triangles.
 /// The triangles are stored separately,
 /// in a triangle list `u32` index buffer.
-pub struct Geometry(Range);
-
-impl ParentRange for Geometry {
-    type Child = u32;
-
-    fn from_range(range: Range) -> Self { Geometry(range) }
-    fn range(&self) -> &Range { &self.0 }
-    fn range_mut(&mut self) -> &mut Range { &mut self.0 }
-}
+pub struct Geometry(pub Vec<Range>);
 
 fn vtn_to_vertex<T>(a: VTNIndex, obj: &wobj::obj::Object) -> T
     where
@@ -61,7 +53,7 @@ impl Geometry {
         obj: &wobj::obj::Object,
         vertices: &mut Vec<T>,
         indices: &mut Vec<u32>
-    ) -> (Geometry, Result<VertexFormat, VertexFormatError>)
+    ) -> (Range<AddTo<Geometry>>, Result<VertexFormat, VertexFormatError>)
         where
             T: Default,
             (Position, T): Pair<Data = Position, Object = T> + SetAt,
@@ -94,7 +86,7 @@ impl Geometry {
             }
         }
         let n = indices.len() - start;
-        let geometry = Geometry(Range::new(start, n));
+        let geometry = Range::new(start, n);
         let res = match (n as u32, uvs, normals) {
             (_, 0, 0) => { Ok(VertexFormat::Position) },
             (n, uvs, 0) if n == uvs => { Ok(VertexFormat::PositionTexture) }
@@ -107,5 +99,10 @@ impl Geometry {
             _ => Err(VertexFormatError::ExpectedSameVertexFormatPerGeometry)
         };
         (geometry, res)
+    }
+
+    /// Adds range.
+    pub fn push(&mut self, range: Range<AddTo<Self>>) {
+        self.0.push(range.cast());
     }
 }

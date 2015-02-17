@@ -1,4 +1,4 @@
-use range::{ Range, ParentRange };
+use range::{ AddTo, Range };
 use wobj;
 use quack::{ Pair, SetAt };
 use std::default::Default;
@@ -11,15 +11,7 @@ use Geometry;
 /// An object consists of a list of geometries.
 /// The geometries are stored separately,
 /// in a geometry buffer.
-pub struct Object(Range);
-
-impl ParentRange for Object {
-    type Child = Geometry;
-
-    fn from_range(range: Range) -> Self { Object(range) }
-    fn range(&self) -> &Range { &self.0 }
-    fn range_mut(&mut self) -> &mut Range { &mut self.0 }
-}
+pub struct Object(pub Vec<Range>);
 
 impl Object {
     /// Adds a new object.
@@ -27,23 +19,28 @@ impl Object {
         obj: &wobj::obj::Object,
         vertices: &mut Vec<T>,
         indices: &mut Vec<u32>,
-        geometries: &mut Vec<Geometry>
-    ) -> Object
+        geometries: &mut Geometry
+    ) -> Range<AddTo<Object>>
         where
             T: Default,
             (Position, T): Pair<Data = Position, Object = T> + SetAt,
             (TextureCoords, T): Pair<Data = TextureCoords, Object = T> + SetAt,
             (Normal, T): Pair<Data = Normal, Object = T> + SetAt
     {
-        let start = geometries.len();
+        let start = geometries.0.len();
         for geom in obj.geometry.iter() {
             // TODO: How to deal with vertex formats?
-            let (geometry, _) = Geometry::add_geometry(
+            let (range, _) = Geometry::add_geometry(
                     geom, obj, vertices, indices
                 );
-            geometries.push(geometry);
+            geometries.push(range);
         }
-        let n = geometries.len() - start;
-        Object(Range::new(start, n))
+        let n = geometries.0.len() - start;
+        Range::new(start, n)
+    }
+
+    /// Adds range.
+    pub fn push(&mut self, range: Range<AddTo<Self>>) {
+        self.0.push(range.cast());
     }
 }
