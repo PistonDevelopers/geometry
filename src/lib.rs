@@ -4,6 +4,7 @@
 
 extern crate range;
 extern crate "wavefront_obj" as wobj;
+#[macro_use]
 extern crate quack;
 
 pub use geometry::Geometry;

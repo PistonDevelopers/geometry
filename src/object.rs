@@ -1,6 +1,6 @@
 use range::{ AddTo, Range };
 use wobj;
-use quack::{ Pair, SetAt };
+use quack::{ Action, Pair, SetAt };
 use std::default::Default;
 
 use Position;
@@ -30,17 +30,22 @@ impl Object {
         let start = geometries.0.len();
         for geom in obj.geometry.iter() {
             // TODO: How to deal with vertex formats?
-            let (range, _) = Geometry::add_geometry(
+            let (add_range, _) = Geometry::add_geometry(
                     geom, obj, vertices, indices
                 );
-            geometries.push(range);
+            geometries.action(add_range);
         }
         let n = geometries.0.len() - start;
         Range::new(start, n)
     }
+}
 
-    /// Adds range.
-    pub fn push(&mut self, range: Range<AddTo<Self>>) {
-        self.0.push(range.cast());
-    }
+quack! {
+    obj: Object[]
+    get:
+    set:
+    action:
+        fn (range: Range<AddTo<Object>>) -> () [] {
+            obj.0.push(range.cast())
+        }
 }
