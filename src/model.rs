@@ -1,6 +1,6 @@
 use range::{ AddTo, Range };
 use wobj;
-use quack::{ Pair, SetAt };
+use quack::{ Action, Pair, SetAt };
 use std::default::Default;
 
 use Normal;
@@ -31,7 +31,7 @@ impl Model {
     {
         let start = objects.0.len();
         for obj in obj_set.objects.iter() {
-            objects.push(Object::add_object(
+            objects.action(Object::add_object(
                 obj,
                 vertices,
                 indices,
@@ -41,4 +41,14 @@ impl Model {
         let n = objects.0.len() - start;
         Range::new(start, n)
     }
+}
+
+quack! {
+    obj: Model[]
+    get:
+    set:
+    action:
+        fn (range: Range<AddTo<Object>>) -> () [] {
+            obj.0.push(range.cast())
+        }
 }

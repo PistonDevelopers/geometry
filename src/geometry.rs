@@ -100,9 +100,14 @@ impl Geometry {
         };
         (geometry, res)
     }
+}
 
-    /// Adds range.
-    pub fn push(&mut self, range: Range<AddTo<Self>>) {
-        self.0.push(range.cast());
-    }
+quack! {
+    obj: Geometry[]
+    get:
+    set:
+    action:
+        fn (range: Range<AddTo<Geometry>>) -> () [] {
+            obj.0.push(range.cast());
+        }
 }
