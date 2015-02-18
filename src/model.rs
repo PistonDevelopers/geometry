@@ -53,7 +53,7 @@ quack! {
     get:
     set:
     action:
-        fn (range: Range<AddTo<Object>>) -> () [] {
+        fn (range: Range<AddTo<Model>>) -> () [] {
             obj.0.push(range.cast())
         }
 }
