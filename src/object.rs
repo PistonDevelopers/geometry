@@ -14,6 +14,11 @@ use Geometry;
 pub struct Object(pub Vec<Range>);
 
 impl Object {
+    /// Creates a new object layer.
+    pub fn new() -> Object {
+        Object(Vec::new())
+    }
+
     /// Adds a new object.
     pub fn add_object<T>(
         obj: &wobj::obj::Object,

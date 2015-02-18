@@ -15,6 +15,11 @@ use Geometry;
 pub struct Model(pub Vec<Range>);
 
 impl Model {
+    /// Creates a new model layer.
+    pub fn new() -> Model {
+        Model(Vec::new())
+    }
+
     /// Adds a model.
     pub fn add_model<T>(
         obj_set: &wobj::obj::ObjSet,
