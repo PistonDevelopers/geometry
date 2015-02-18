@@ -47,6 +47,11 @@ fn vtn_to_vertex<T>(a: VTNIndex, obj: &wobj::obj::Object) -> T
 }
 
 impl Geometry {
+    /// Creates a new geometry layer.
+    pub fn new() -> Geometry {
+        Geometry(Vec::new())
+    }
+
     /// Adds geometry from Wavefront OBJ format to vertex and index buffer.
     pub fn add_geometry<T>(
         geom: &wobj::obj::Geometry,
