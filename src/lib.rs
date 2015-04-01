@@ -3,7 +3,7 @@
 //! A structure for storing and look up 3D geometry
 
 extern crate range;
-extern crate "wavefront_obj" as wobj;
+extern crate wavefront_obj as wobj;
 #[macro_use]
 extern crate quack;
 
