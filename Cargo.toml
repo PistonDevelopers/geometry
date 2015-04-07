@@ -24,7 +24,3 @@ git = "https://github.com/pistondevelopers/range"
 [dependencies.wavefront_obj]
 git = "https://github.com/PistonDevelopers/wavefront_obj"
 #version = "0.0.0"
-
-[dependencies.quack]
-git = "https://github.com/pistondevelopers/quack"
-#version = "0.0.0"

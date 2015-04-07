@@ -2,11 +2,8 @@ use range::{ AddTo, Range };
 use wobj;
 use wobj::obj::VTNIndex;
 use std::default::Default;
-use quack::{ Pair, SetAt };
 
-use Position;
-use TextureCoords;
-use Normal;
+use Vertex;
 use VertexFormat;
 use VertexFormatError;
 
@@ -16,32 +13,26 @@ use VertexFormatError;
 pub struct Geometry(pub Vec<Range>);
 
 fn vtn_to_vertex<T>(a: VTNIndex, obj: &wobj::obj::Object) -> T
-    where
-        T: Default,
-        (Position, T): Pair<Data = Position, Object = T> + SetAt,
-        (TextureCoords, T): Pair<Data = TextureCoords, Object = T> + SetAt,
-        (Normal, T): Pair<Data = Normal, Object = T> + SetAt
+    where T: Vertex + Default
 {
-    use quack::Set;
-
     let mut vertex: T = Default::default();
     let position = obj.vertices[a.0];
-    vertex.set_mut(Position([
+    vertex.set_position([
         position.x as f32,
         position.y as f32,
         position.z as f32
-    ]));
+    ]);
     if let Some(uv) = a.1 {
         let uv = obj.tex_vertices[uv];
-        vertex.set_mut(TextureCoords([uv.x as f32, uv.y as f32]));
+        vertex.set_texture_coords([uv.x as f32, uv.y as f32]);
     }
     if let Some(normal) = a.2 {
         let normal = obj.normals[normal];
-        vertex.set_mut(Normal([
+        vertex.set_normal([
             normal.x as f32,
             normal.y as f32,
             normal.z as f32
-        ]));
+        ]);
     }
     vertex
 }
@@ -52,18 +43,14 @@ impl Geometry {
         Geometry(Vec::new())
     }
 
-    /// Adds geometry from Wavefront OBJ format to vertex and index buffer.
-    pub fn add_geometry<T>(
+    /// Creates new geometry from Wavefront OBJ format to vertex and index buffer.
+    pub fn new_geometry<T>(
         geom: &wobj::obj::Geometry,
         obj: &wobj::obj::Object,
         vertices: &mut Vec<T>,
         indices: &mut Vec<u32>
     ) -> (Range<AddTo<Geometry>>, Result<VertexFormat, VertexFormatError>)
-        where
-            T: Default,
-            (Position, T): Pair<Data = Position, Object = T> + SetAt,
-            (TextureCoords, T): Pair<Data = TextureCoords, Object = T> + SetAt,
-            (Normal, T): Pair<Data = Normal, Object = T> + SetAt
+        where T: Vertex + Default
     {
         let start = indices.len();
         let mut i = vertices.len() as u32;
@@ -105,14 +92,9 @@ impl Geometry {
         };
         (geometry, res)
     }
-}
 
-quack! {
-    obj: Geometry[]
-    get:
-    set:
-    action:
-        fn (range: Range<AddTo<Geometry>>) -> () [] {
-            obj.0.push(range.cast());
-        }
+    /// Adds new geometry.
+    pub fn add_range(&mut self, range: Range<AddTo<Geometry>>) {
+        self.0.push(range.cast());
+    }
 }

@@ -4,8 +4,6 @@
 
 extern crate range;
 extern crate wavefront_obj as wobj;
-#[macro_use]
-extern crate quack;
 
 pub use geometry::Geometry;
 pub use object::Object;
@@ -15,14 +13,15 @@ mod geometry;
 mod object;
 mod model;
 
-/// Property type for position.
-pub struct Position(pub [f32; 3]);
-
-/// Property type for texture coordinates.
-pub struct TextureCoords(pub [f32; 2]);
-
-/// Property type for normal.
-pub struct Normal(pub [f32; 3]);
+/// Implemented by vertex types.
+pub trait Vertex {
+    /// Sets position.
+    fn set_position(&mut self, [f32; 3]);
+    /// Sets texture coords.
+    fn set_texture_coords(&mut self, [f32; 2]);
+    /// Sets normal.
+    fn set_normal(&mut self, [f32; 3]);
+}
 
 /// Description of vertex format.
 pub enum VertexFormat {

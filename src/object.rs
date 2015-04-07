@@ -1,11 +1,8 @@
 use range::{ AddTo, Range };
 use wobj;
-use quack::{ Action, Pair, SetAt };
 use std::default::Default;
 
-use Position;
-use TextureCoords;
-use Normal;
+use Vertex;
 use Geometry;
 
 /// An object consists of a list of geometries.
@@ -20,37 +17,28 @@ impl Object {
     }
 
     /// Adds a new object.
-    pub fn add_object<T>(
+    pub fn new_object<T>(
         obj: &wobj::obj::Object,
         vertices: &mut Vec<T>,
         indices: &mut Vec<u32>,
         geometries: &mut Geometry
     ) -> Range<AddTo<Object>>
-        where
-            T: Default,
-            (Position, T): Pair<Data = Position, Object = T> + SetAt,
-            (TextureCoords, T): Pair<Data = TextureCoords, Object = T> + SetAt,
-            (Normal, T): Pair<Data = Normal, Object = T> + SetAt
+        where T: Vertex + Default
     {
         let start = geometries.0.len();
         for geom in obj.geometry.iter() {
             // TODO: How to deal with vertex formats?
-            let (add_range, _) = Geometry::add_geometry(
+            let (add_range, _) = Geometry::new_geometry(
                     geom, obj, vertices, indices
                 );
-            geometries.action(add_range);
+            geometries.add_range(add_range);
         }
         let n = geometries.0.len() - start;
         Range::new(start, n)
     }
-}
 
-quack! {
-    obj: Object[]
-    get:
-    set:
-    action:
-        fn (range: Range<AddTo<Object>>) -> () [] {
-            obj.0.push(range.cast())
-        }
+    /// Adds new object.
+    pub fn add_range(&mut self, range: Range<AddTo<Object>>) {
+        self.0.push(range.cast())
+    }
 }
