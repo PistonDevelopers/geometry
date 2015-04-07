@@ -1,11 +1,8 @@
 use range::{ AddTo, Range };
 use wobj;
-use quack::{ Action, Pair, SetAt };
 use std::default::Default;
 
-use Normal;
-use TextureCoords;
-use Position;
+use Vertex;
 use Object;
 use Geometry;
 
@@ -21,22 +18,18 @@ impl Model {
     }
 
     /// Adds a model.
-    pub fn add_model<T>(
+    pub fn new_model<T>(
         obj_set: &wobj::obj::ObjSet,
         vertices: &mut Vec<T>,
         indices: &mut Vec<u32>,
         geometries: &mut Geometry,
         objects: &mut Object,
     ) -> Range<AddTo<Model>>
-        where
-            T: Default,
-            (Position, T): Pair<Data = Position, Object = T> + SetAt,
-            (TextureCoords, T): Pair<Data = TextureCoords, Object = T> + SetAt,
-            (Normal, T): Pair<Data = Normal, Object = T> + SetAt
+        where T: Vertex + Default
     {
         let start = objects.0.len();
         for obj in obj_set.objects.iter() {
-            objects.action(Object::add_object(
+            objects.add_range(Object::new_object(
                 obj,
                 vertices,
                 indices,
@@ -46,14 +39,9 @@ impl Model {
         let n = objects.0.len() - start;
         Range::new(start, n)
     }
-}
 
-quack! {
-    obj: Model[]
-    get:
-    set:
-    action:
-        fn (range: Range<AddTo<Model>>) -> () [] {
-            obj.0.push(range.cast())
-        }
+    /// Adds new model.
+    pub fn add_range(&mut self, range: Range<AddTo<Model>>) {
+        self.0.push(range.cast())
+    }
 }
