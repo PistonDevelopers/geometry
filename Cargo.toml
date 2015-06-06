@@ -1,7 +1,7 @@
 [package]
 
 name = "geometry"
-version = "0.0.16"
+version = "0.1.0"
 authors = [
     "bvssvni <bvssvni@gmail.com>"
 ]
@@ -17,10 +17,7 @@ homepage = "https://github.com/PistonDevelopers/geometry"
 name = "geometry"
 path = "src/lib.rs"
 
-[dependencies.range]
-git = "https://github.com/pistondevelopers/range"
-#version = "0.0.6"
+[dependencies]
+range = "0.1.1"
+wavefront_obj = "2.0.2"
 
-[dependencies.wavefront_obj]
-git = "https://github.com/PistonDevelopers/wavefront_obj"
-#version = "0.0.0"
