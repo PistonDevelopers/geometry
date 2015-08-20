@@ -1,7 +1,7 @@
 [package]
 
 name = "geometry"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
     "bvssvni <bvssvni@gmail.com>"
 ]
@@ -18,6 +18,6 @@ name = "geometry"
 path = "src/lib.rs"
 
 [dependencies]
-range = "0.1.1"
-wavefront_obj = "2.0.2"
+range = "0.2.0"
+wavefront_obj = "2.0.3"
 

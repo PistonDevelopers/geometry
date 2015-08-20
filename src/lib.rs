@@ -9,9 +9,14 @@ pub use geometry::Geometry;
 pub use object::Object;
 pub use model::Model;
 
+use std::marker::PhantomData;
+
 mod geometry;
 mod object;
 mod model;
+
+/// Add range to object `T`.
+pub struct AddTo<T>(PhantomData<T>);
 
 /// Implemented by vertex types.
 pub trait Vertex {

@@ -1,7 +1,8 @@
-use range::{ AddTo, Range };
+use range::Range;
 use wobj;
 use std::default::Default;
 
+use AddTo;
 use Vertex;
 use Geometry;
 
