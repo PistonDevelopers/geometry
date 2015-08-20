@@ -1,8 +1,9 @@
-use range::{ AddTo, Range };
+use range::Range;
 use wobj;
 use wobj::obj::VTNIndex;
 use std::default::Default;
 
+use AddTo;
 use Vertex;
 use VertexFormat;
 use VertexFormatError;
